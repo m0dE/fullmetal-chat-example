@@ -1,13 +1,6 @@
 # React ChatGPT Clone using Fullmetal
 
-The ChatGPT clone uses chat completion v1 API with the gpt-3.5-turbo model and express.js to run a server requesting client-side requests.
-
-
-
-## Screenshots
-
-![App Screenshot](https://github.com/kas1qqqq/infinite-todos/assets/29861553/7589892e-c65b-4f97-8a24-5fe12465e771)
-
+The ChatGPT clone uses Fullmetal and express.js to run a server requesting client-side requests.
 
 ## Installation
 
