@@ -25,3 +25,6 @@ Start backend server with nodemon.
 ```bash
   npm run dev:backend
 ```
+
+# Credit
+This project is a fork of [React-chatGPT-Clone](https://github.com/kas1qqqq/react-chatgpt-clone) which is created by [kas1qqqq](https://github.com/kas1qqqq)
