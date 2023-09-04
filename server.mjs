@@ -19,7 +19,10 @@ const io = new Server(backEndServer, {
     methods: ['GET', 'POST'],
   },
 });
-const fullmetal = new Fullmetal('credential-key');
+const fullMetalConfig = {
+  apiKey: 'fk-sk-HlXU8829zujhVyUaVHbH',
+};
+const fullmetal = new Fullmetal(fullMetalConfig);
 fullmetal.onResponse(async (result) => {
   io.to(result.refId).emit('response', result.response);
 });

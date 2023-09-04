@@ -9,14 +9,13 @@ dotenv.config();
 
 const app = express();
 app.use(express.json());
-app.use(cors({
+app.use(
+  cors({
     origin: '*', // Change this to your React.js app's URL
     methods: ['GET', 'POST'],
-  }));
+  })
+);
 const options = {
-  /* key: fs.readFileSync(`${process.env.KEY_PEM}`),
-  cert: fs.readFileSync(`${process.env.CERT_PEM}`),*/
-
   key: fs.readFileSync(`${process.env.key}`),
   cert: fs.readFileSync(`${process.env.cert}`),
   ca: fs.readFileSync(`${process.env.ca}`),
@@ -36,7 +35,10 @@ const io = new Server(httpsServer, {
     methods: ['GET', 'POST'],
   },
 });
-const fullmetal = new Fullmetal('credential-key');
+const fullMetalConfig = {
+  apiKey: 'sample-key',
+};
+const fullmetal = new Fullmetal(fullMetalConfig);
 
 fullmetal.onResponse(async (result) => {
   io.to(result.refId).emit('response', result.response);
@@ -56,8 +58,8 @@ ASSISTANT:`,
   });
 });
 
-app.get("/get", (req, res) => {
-  res.json({t:1});
+app.get('/get', (req, res) => {
+  res.json({ t: 1 });
 });
 
 io.on('error', (error) => {
