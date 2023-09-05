@@ -36,30 +36,30 @@ const io = new Server(httpsServer, {
   },
 });
 const fullMetalConfig = {
-  apiKey: 'sample-key',
+  apiKey: 'fk-sk-HlXU8829zujhVyUaVHbH',
 };
 const fullmetal = new Fullmetal(fullMetalConfig);
-
 fullmetal.onResponse(async (result) => {
   io.to(result.refId).emit('response', result.response);
 });
-io.on('connection', async (socket) => {
-  console.log('New connection established', socket.id);
-  // Receive questions from clients and pass them to agents
-
-  socket.on('prompt', async (prompt) => {
-    console.log(prompt);
-    await fullmetal.sendPrompt(
-      `This is a conversation between a user and a helpful assistant.
-USER: ${prompt}
-ASSISTANT:`,
-      socket.id
-    );
-  });
+fullmetal.onError(async (data) => {
+  io.to(data.refId).emit('error', data.message);
 });
 
-app.get('/get', (req, res) => {
-  res.json({ t: 1 });
+fullmetal.onResponseQueue(async (data) => {
+  io.to(data.refId).emit('responseQueuedNumber', data.queuedNumber);
+});
+io.on('connection', async (socket) => {
+  console.log('New connection established', socket.id);
+  socket.on('prompt', async (data) => {
+    await fullmetal.sendPrompt(
+      `This is a conversation between a user and a helpful assistant.
+USER: ${data.prompt}  
+ASSISTANT:`,
+      socket.id,
+      { model: data.model }
+    );
+  });
 });
 
 io.on('error', (error) => {

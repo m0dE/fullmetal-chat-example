@@ -26,15 +26,22 @@ const fullmetal = new Fullmetal(fullMetalConfig);
 fullmetal.onResponse(async (result) => {
   io.to(result.refId).emit('response', result.response);
 });
+fullmetal.onError(async (data) => {
+  io.to(data.refId).emit('error', data.message);
+});
+
+fullmetal.onResponseQueue(async (data) => {
+  io.to(data.refId).emit('responseQueuedNumber', data.queuedNumber);
+});
 io.on('connection', async (socket) => {
   console.log('New connection established', socket.id);
-  socket.on('prompt', async (prompt) => {
-    console.log(prompt);
+  socket.on('prompt', async (data) => {
     await fullmetal.sendPrompt(
       `This is a conversation between a user and a helpful assistant.
-USER: ${prompt}
+USER: ${data.prompt}  
 ASSISTANT:`,
-      socket.id
+      socket.id,
+      { model: data.model }
     );
   });
 });
@@ -44,5 +51,5 @@ app.listen(PORT, () => {
 });
 
 io.listen(5025, () => {
-  console.log(`Client backend server is running on port 5020`);
+  console.log(`Client backend server is running on port 5025`);
 });

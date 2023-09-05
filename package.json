@@ -15,13 +15,14 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "fullmetal-client": "file:../fullmetal-client",
     "nodemon": "^2.0.22",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.8.0",
+    "react-toastify": "^9.1.3",
     "socket.io": "^4.7.2",
-    "socket.io-client": "^4.7.2",
-    "fullmetal-client": "file:../fullmetal-client"
+    "socket.io-client": "^4.7.2"
   },
   "devDependencies": {
     "@types/react": "^18.0.28",
