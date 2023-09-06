@@ -13,6 +13,7 @@ function App() {
   const [previousChats, setPreviousChats] = useState([]);
   const [models, setModels] = useState();
   const [selectedModel, setSelectedModel] = useState();
+  const [queuedNumberMessage, setQueuedNumberMessage] = useState();
   const scrollToLastItem = useRef(null);
   const textboxRef = useRef(null);
 
@@ -36,6 +37,7 @@ function App() {
             scrollToLastItem.current?.lastElementChild?.scrollIntoView({
               behavior: 'smooth',
             });
+            setQueuedNumberMessage('');
             //if (response && response.length) {
             if (result.completed) {
               setMessage('');
@@ -53,13 +55,17 @@ function App() {
             setMessage('');
             setIsResponseLoading(false);
             setPrompt('');
+            setQueuedNumberMessage('');
             textboxRef.current.focus();
           });
 
           newSocket.on('responseQueuedNumber', (queuedNumber) => {
-            toast.success(
+            setQueuedNumberMessage(
               `Prompt successfully queued. There are ${queuedNumber} prompts ahead of you.`
             );
+            // toast.success(
+            //   `Prompt successfully queued. There are ${queuedNumber} prompts ahead of you.`
+            // );
           });
         }
       });
@@ -302,7 +308,7 @@ function App() {
                   onKeyDown={handleTextAreaKeyPress}
                   value={
                     isResponseLoading
-                      ? 'Loading...'
+                      ? `Loading... ${queuedNumberMessage}`
                       : prompt.charAt(0).toUpperCase() + prompt.slice(1)
                   }
                 ></textarea>
