@@ -20,7 +20,7 @@ const io = new Server(backEndServer, {
   },
 });
 const fullMetalConfig = {
-  apiKey: 'fk-sk-HlXU8829zujhVyUaVHbH',
+  apiKey: process.env.FULLMETAL_API_KEY,
 };
 const fullmetal = new Fullmetal(fullMetalConfig);
 fullmetal.onResponse(async (response) => {
