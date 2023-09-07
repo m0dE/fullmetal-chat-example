@@ -139,9 +139,9 @@ button {
   font-size: 14px;
 }
 
-.main-header li:nth-child(odd) {
+/* .main-header li:nth-child(odd) {
   background-color: unset;
-}
+} */
 
 .main-header li:nth-child(even) {
   background-color: #444655;

@@ -11,6 +11,7 @@ function App() {
   const [message, setMessage] = useState('');
   const [isResponseLoading, setIsResponseLoading] = useState(false);
   const [previousChats, setPreviousChats] = useState([]);
+  const [summaryDetail, setSummaryDetail] = useState();
   const [models, setModels] = useState();
   const [selectedModel, setSelectedModel] = useState();
   const [queuedNumberMessage, setQueuedNumberMessage] = useState();
@@ -39,6 +40,7 @@ function App() {
             setQueuedNumberMessage('');
             //if (response && response.length) {
             if (response.completed) {
+              setSummaryDetail(response);
               setMessage('');
               setIsResponseLoading(false);
               setPrompt('');
@@ -142,6 +144,22 @@ function App() {
       setPreviousChats(newOutput);
     }
   }, [message]);
+
+  useEffect(() => {
+    if (summaryDetail) {
+      const newOutput = [...previousChats];
+      console.log(newOutput, summaryDetail);
+      // @ts-ignore
+      newOutput[previousChats.length - 1].model = summaryDetail.model;
+      newOutput[previousChats.length - 1].speed = `${summaryDetail.speed}s`;
+      newOutput[
+        previousChats.length - 1
+      ].tokenPerSecond = `${summaryDetail.tokenPerSecond}`;
+
+      // @ts-ignore
+      setPreviousChats(newOutput);
+    }
+  }, [summaryDetail]);
 
   const handleTextAreaKeyPress = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -253,26 +271,56 @@ function App() {
             {previousChats.length ? (
               <ul>
                 {previousChats?.map((chatMsg, idx) => (
-                  <li key={idx} ref={scrollToLastItem}>
-                    <img
-                      src={
+                  <>
+                    <li
+                      key={idx}
+                      ref={scrollToLastItem}
+                      style={
                         chatMsg.role === 'user'
-                          ? '/face_logo.svg'
-                          : '/ChatGPT_logo.svg'
+                          ? { backgroundColor: 'unset' }
+                          : {}
                       }
-                      alt={
-                        chatMsg.role === 'user' ? 'Face icon' : 'ChatGPT icon'
-                      }
-                      style={{
-                        backgroundColor: chatMsg.role === 'user' && '#ECECF1',
-                      }}
-                    />
-                    <div
-                      style={{ wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}
                     >
-                      {chatMsg.content}
-                    </div>
-                  </li>
+                      <img
+                        src={
+                          chatMsg.role === 'user'
+                            ? '/face_logo.svg'
+                            : '/ChatGPT_logo.svg'
+                        }
+                        alt={
+                          chatMsg.role === 'user' ? 'Face icon' : 'ChatGPT icon'
+                        }
+                        style={{
+                          backgroundColor: chatMsg.role === 'user' && '#ECECF1',
+                        }}
+                      />
+                      <div
+                        style={{
+                          wordWrap: 'break-word',
+                          whiteSpace: 'pre-wrap',
+                        }}
+                      >
+                        {chatMsg.content}
+                      </div>
+                    </li>
+                    {chatMsg.role !== 'user' &&
+                      chatMsg.model &&
+                      chatMsg.speed && (
+                        <li
+                          style={{
+                            textAlign: 'right',
+                            display: 'block',
+                            padding: '2px',
+                            backgroundColor: 'transparent',
+                          }}
+                        >
+                          <small style={{ color: '#1acb1a' }}>
+                            Model={chatMsg.model}, Speed={chatMsg.speed},
+                            Token/s={chatMsg.tokenPerSecond}
+                          </small>
+                        </li>
+                      )}
+                  </>
                 ))}
               </ul>
             ) : (
