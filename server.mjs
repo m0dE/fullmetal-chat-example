@@ -23,8 +23,9 @@ const fullMetalConfig = {
   apiKey: 'fk-sk-HlXU8829zujhVyUaVHbH',
 };
 const fullmetal = new Fullmetal(fullMetalConfig);
-fullmetal.onResponse(async (result) => {
-  io.to(result.refId).emit('response', result.response);
+fullmetal.onResponse(async (response) => {
+  // response= {token:'', completed:false, speed:10, model:''Wizard-Vicuna-7B-Uncensored', refId: end-client-socket.id}
+  io.to(response.refId).emit('response', response);
 });
 fullmetal.onError(async (data) => {
   io.to(data.refId).emit('error', data.message);

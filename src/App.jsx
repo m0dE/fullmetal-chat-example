@@ -31,21 +31,20 @@ function App() {
         console.log('Connected to WebSocket server', newSocket.id);
         if (newSocket) {
           // @ts-ignore
-          newSocket.on('response', (result) => {
-            const response = result.response;
+          newSocket.on('response', (response) => {
             // @ts-ignore
             scrollToLastItem.current?.lastElementChild?.scrollIntoView({
               behavior: 'smooth',
             });
             setQueuedNumberMessage('');
             //if (response && response.length) {
-            if (result.completed) {
+            if (response.completed) {
               setMessage('');
               setIsResponseLoading(false);
               setPrompt('');
               textboxRef.current.focus();
             } else {
-              setMessage((prev) => prev + response);
+              setMessage((prev) => prev + response.token);
             }
             //}
           });
