@@ -267,9 +267,8 @@ function App() {
             {previousChats.length ? (
               <ul>
                 {previousChats?.map((chatMsg, idx) => (
-                  <>
+                  <div key={idx}>
                     <li
-                      key={idx}
                       ref={scrollToLastItem}
                       style={
                         chatMsg.role === 'user'
@@ -317,7 +316,7 @@ function App() {
                           </small>
                         </li>
                       )}
-                  </>
+                  </div>
                 ))}
               </ul>
             ) : (
