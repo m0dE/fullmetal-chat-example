@@ -6,7 +6,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
-  const [socket, setSocket] = useState();
   const [prompt, setPrompt] = useState('');
   const [message, setMessage] = useState('');
   const [isResponseLoading, setIsResponseLoading] = useState(false);
@@ -14,68 +13,10 @@ function App() {
   const [summaryDetail, setSummaryDetail] = useState();
   const [models, setModels] = useState();
   const [selectedModel, setSelectedModel] = useState();
-  const [queuedNumberMessage, setQueuedNumberMessage] = useState();
+  const [queuedNumberMessage, setQueuedNumberMessage] = useState('');
   const scrollToLastItem = useRef(null);
   const textboxRef = useRef(null);
-
-  // io connection
-  const initIOConnection = () => {
-    if (!socket) {
-      const newSocket = io(ChatBackendScoketUrl, {
-        path: '/socket.io/',
-        forceNew: true,
-        reconnectionAttempts: 3,
-        timeout: 2000,
-      });
-
-      newSocket.on('connect', () => {
-        console.log('Connected to WebSocket server', newSocket.id);
-        if (newSocket) {
-          // @ts-ignore
-          newSocket.on('response', (response) => {
-            // @ts-ignore
-            scrollToLastItem.current?.lastElementChild?.scrollIntoView({
-              behavior: 'smooth',
-            });
-            setQueuedNumberMessage('');
-            //if (response && response.length) {
-            if (response.completed) {
-              setSummaryDetail(response);
-              setMessage('');
-              setIsResponseLoading(false);
-              setPrompt('');
-              textboxRef.current.focus();
-            } else {
-              setMessage((prev) => prev + response.token);
-            }
-            //}
-          });
-
-          newSocket.on('error', (message) => {
-            toast.error(message);
-            setMessage('');
-            setIsResponseLoading(false);
-            setPrompt('');
-            setQueuedNumberMessage('');
-            textboxRef.current.focus();
-          });
-
-          newSocket.on('responseQueuedNumber', (queuedNumber) => {
-            setQueuedNumberMessage(
-              `Prompt successfully queued. There are ${queuedNumber} prompts ahead of you.`
-            );
-            // toast.success(
-            //   `Prompt successfully queued. There are ${queuedNumber} prompts ahead of you.`
-            // );
-          });
-        }
-      });
-
-      // @ts-ignore
-      setSocket(newSocket);
-    }
-  };
-
+  let socketId;
   // fetch models from api server
   const fetchModels = () => {
     // Fetch data from the API
@@ -98,10 +39,8 @@ function App() {
   };
   useEffect(() => {
     textboxRef.current.focus();
-    initIOConnection();
     fetchModels();
   }, []);
-
   const submitHandler = async (e) => {
     e.preventDefault();
     if (!selectedModel) {
@@ -114,29 +53,84 @@ function App() {
     }
 
     try {
-      if (socket) {
-        socket.emit('prompt', { prompt, model: selectedModel });
-        setIsResponseLoading(true);
-        setPreviousChats((prevChats) => [
-          ...prevChats,
-          {
-            role: 'user',
-            content: prompt,
-          },
-          {
-            role: 'assistant',
-            content: '',
-          },
-        ]);
-      }
+      SendPrompt();
     } catch (e) {
       console.error(e);
     }
   };
 
+  const SendPrompt = () => {
+    const newSocket = io(ChatBackendScoketUrl, {
+      path: '/socket.io/',
+      forceNew: true,
+      reconnectionAttempts: 3,
+      timeout: 2000,
+    });
+
+    newSocket.on('connect', () => {
+      newSocket.emit('prompt', { prompt, model: selectedModel });
+      setIsResponseLoading(true);
+      setPreviousChats((prevChats) => [
+        ...prevChats,
+        {
+          role: 'user',
+          content: prompt,
+        },
+        {
+          role: 'assistant',
+          content: '',
+        },
+      ]);
+      console.log('Connected to WebSocket server', newSocket.id);
+      socketId = newSocket.id;
+      // @ts-ignore
+      newSocket.on('response', (response) => {
+        // @ts-ignore
+        scrollToLastItem.current?.lastElementChild?.scrollIntoView({
+          behavior: 'smooth',
+        });
+        setQueuedNumberMessage('');
+        //if (response && response.length) {
+        if (response.completed) {
+          setSummaryDetail(response);
+          setMessage('');
+          setIsResponseLoading(false);
+          setPrompt('');
+          textboxRef.current.focus();
+
+          // disconnect after response is over
+          newSocket.disconnect();
+        } else {
+          setMessage((prev) => prev + response.token);
+        }
+      });
+
+      newSocket.on('error', (message) => {
+        toast.error(message);
+        setMessage('');
+        setIsResponseLoading(false);
+        setPrompt('');
+        setQueuedNumberMessage('');
+        textboxRef.current.focus();
+        // disconnect after response is over
+        newSocket.disconnect();
+      });
+
+      newSocket.on('responseQueuedNumber', (queuedNumber) => {
+        if (queuedNumber) {
+          setQueuedNumberMessage(
+            `Prompt successfully queued. There are ${queuedNumber} prompts ahead of you.`
+          );
+        }
+      });
+      newSocket.on('disconnect', () => {
+        console.log('Disconnected', socketId);
+      });
+    });
+  };
+
   useEffect(() => {
     if (prompt && message) {
-      console.log(prompt, message);
       const newOutput = previousChats;
       // @ts-ignore
       newOutput[previousChats.length - 1].content = message;
@@ -147,14 +141,16 @@ function App() {
 
   useEffect(() => {
     if (summaryDetail) {
+      console.log(summaryDetail);
       const newOutput = [...previousChats];
-      console.log(newOutput, summaryDetail);
       // @ts-ignore
       newOutput[previousChats.length - 1].model = summaryDetail.model;
-      newOutput[previousChats.length - 1].speed = `${summaryDetail.speed}s`;
       newOutput[
         previousChats.length - 1
-      ].tokenPerSecond = `${summaryDetail.tokenPerSecond}`;
+      ].speed = `${summaryDetail.speed} token/s`;
+      newOutput[
+        previousChats.length - 1
+      ].elapsedTime = `${summaryDetail.elapsedTime}s`;
 
       // @ts-ignore
       setPreviousChats(newOutput);
@@ -285,7 +281,7 @@ function App() {
                         src={
                           chatMsg.role === 'user'
                             ? '/face_logo.svg'
-                            : '/ChatGPT_logo.svg'
+                            : '/fullmetal.png'
                         }
                         alt={
                           chatMsg.role === 'user' ? 'Face icon' : 'ChatGPT icon'
@@ -305,7 +301,8 @@ function App() {
                     </li>
                     {chatMsg.role !== 'user' &&
                       chatMsg.model &&
-                      chatMsg.speed && (
+                      chatMsg.speed &&
+                      chatMsg.elapsedTime && (
                         <li
                           style={{
                             textAlign: 'right',
@@ -316,7 +313,7 @@ function App() {
                         >
                           <small style={{ color: '#1acb1a' }}>
                             Model={chatMsg.model}, Speed={chatMsg.speed},
-                            Token/s={chatMsg.tokenPerSecond}
+                            Elapsed Time={chatMsg.elapsedTime}
                           </small>
                         </li>
                       )}

@@ -40,7 +40,7 @@ const fullMetalConfig = {
 };
 const fullmetal = new Fullmetal(fullMetalConfig);
 fullmetal.onResponse(async (response) => {
-  // response= {token:'', completed:false, speed:10, model:''Wizard-Vicuna-7B-Uncensored', refId: end-client-socket.id}
+  // response= {token:'', completed:false, speed:10/s, elapsedTime:2s model:''Wizard-Vicuna-7B-Uncensored', refId: end-client-socket.id}
   io.to(response.refId).emit('response', response);
 });
 fullmetal.onError(async (data) => {
