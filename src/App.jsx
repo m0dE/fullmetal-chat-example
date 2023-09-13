@@ -239,14 +239,14 @@ function App() {
             </a>{' '}
             )
           </h2>
-          <hr style={{ width: '40vw', margin: '10px auto' }} />
+          <hr />
           {models && (
             <div style={{ display: 'flex' }}>
               <span style={{ margin: '20px 10px' }}>Model: </span>
               <select
                 onChange={(e) => setSelectedModel(e.target.value)}
                 value={selectedModel}
-                style={{ width: 'auto', margin: '10px 0', padding: '5px 10px' }}
+                style={{ margin: '10px 0', padding: '5px 10px' }}
               >
                 {models.map((key) => (
                   <option key={key} value={key}>

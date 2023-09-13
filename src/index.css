@@ -130,13 +130,15 @@ button {
 
 .main-header li {
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   gap: 1rem;
   background-color: rgb(68, 70, 85);
   padding: 1rem;
   margin: 1rem 0;
   border-radius: 0.3rem;
+  line-height: 1.5rem;
   font-size: 14px;
+  width: 100%;
 }
 
 /* .main-header li:nth-child(odd) {
@@ -183,12 +185,13 @@ button {
     rgb(0, 0, 0, 0.05) 0 -0.7rem 1.8rem, rgb(0, 0, 0, 0.05) 0 0.2rem 0.3rem,
     rgb(0, 0, 0, 0.05) 0 0.7rem 0.2rem, rgb(0, 0, 0, 0.05) 0 0.2rem 0.3rem;
   margin: 1rem auto;
-  width: 745px;
+  width: 100%;
 }
 
 .footer-text {
   margin: 0 auto 1rem auto;
-  width: 745px;
+  width: 100%;
+  text-align: center;
 }
 
 .form-container input,
@@ -223,10 +226,30 @@ select::placeholder {
 .form-container svg:hover {
   fill: #8e8fa1;
 }
+hr {
+  width: 100%;
+  margin: 10px auto;
+}
 
+h2 {
+  font-size: 1rem;
+  text-align: center;
+}
 @media screen and (min-width: 1280px) {
-  .main-header li {
+  .main-header li,
+  .form-container {
     margin: 0rem auto;
-    width: 745px;
+    width: 40vw;
+  }
+  .footer-text {
+    margin: 0 auto 1rem auto;
+    width: 40vw;
+  }
+  hr {
+    width: 40vw;
+    margin: 10px auto;
+  }
+  h2 {
+    font-size: 2rem;
   }
 }
