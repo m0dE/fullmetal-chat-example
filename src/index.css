@@ -128,7 +128,7 @@ button {
   height: 100vh;
 }
 
-.main-header li {
+.main-header ul div li.fullmetal-chat-li {
   display: flex;
   /* align-items: center; */
   gap: 1rem;
@@ -145,7 +145,7 @@ button {
   background-color: unset;
 } */
 
-.main-header li:nth-child(even) {
+.main-header ul div li.fullmetal-chat-li:nth-child(even) {
   background-color: #444655;
 }
 
@@ -236,7 +236,7 @@ h2 {
   text-align: center;
 }
 @media screen and (min-width: 1280px) {
-  .main-header li,
+  .main-header ul div li.fullmetal-chat-li,
   .form-container {
     margin: 0rem auto;
     width: 40vw;
@@ -252,4 +252,8 @@ h2 {
   h2 {
     font-size: 2rem;
   }
+}
+
+li.fullmetal-chat-li li {
+  line-height: 14px;
 }

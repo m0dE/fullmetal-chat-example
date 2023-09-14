@@ -4,6 +4,9 @@ import io from 'socket.io-client';
 import { FullmetalAPIURL, ChatBackendScoketUrl } from './config';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Markdown from 'react-markdown';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { dracula } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 function App() {
   const [prompt, setPrompt] = useState('');
@@ -269,6 +272,7 @@ function App() {
                 {previousChats?.map((chatMsg, idx) => (
                   <div key={idx}>
                     <li
+                      className='fullmetal-chat-li'
                       ref={scrollToLastItem}
                       style={
                         chatMsg.role === 'user'
@@ -295,7 +299,33 @@ function App() {
                           whiteSpace: 'pre-wrap',
                         }}
                       >
-                        {chatMsg.content}
+                        <Markdown
+                          components={{
+                            code({
+                              node,
+                              inline,
+                              className,
+                              children,
+                              ...props
+                            }) {
+                              const match = /language-(\w+)/.exec(
+                                className || ''
+                              );
+
+                              return (
+                                <SyntaxHighlighter
+                                  style={dracula}
+                                  PreTag='div'
+                                  language={'javascript'}
+                                  children={String(children).replace(/\n$/, '')}
+                                  {...props}
+                                />
+                              );
+                            },
+                          }}
+                        >
+                          {chatMsg.content}
+                        </Markdown>
                       </div>
                     </li>
                     {chatMsg.role !== 'user' &&
@@ -303,6 +333,7 @@ function App() {
                       chatMsg.speed &&
                       chatMsg.elapsedTime && (
                         <li
+                          className='fullmetal-chat-li'
                           style={{
                             textAlign: 'right',
                             display: 'block',
