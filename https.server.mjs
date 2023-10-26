@@ -37,6 +37,7 @@ const io = new Server(httpsServer, {
 });
 const fullMetalConfig = {
   apiKey: process.env.FULLMETAL_API_KEY,
+  name: 'FullmetalChat',
 };
 const fullmetal = new Fullmetal(fullMetalConfig);
 fullmetal.onResponse(async (response) => {
