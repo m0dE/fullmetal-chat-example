@@ -520,10 +520,7 @@ function App() {
               ) : (
                 isResponseLoading &&
                 regenerateClicked && (
-                  <button
-                    className='regenerate-button '
-                    style={{ marginBottom: '10px' }}
-                  >
+                  <button className='regenerate-button '>
                     <div
                       className='loading-spinner'
                       style={{ marginRight: '4px' }}
