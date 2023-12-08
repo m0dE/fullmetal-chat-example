@@ -42,8 +42,8 @@ function App() {
       .then((result) => {
         // Update the state with the fetched data
         console.log(result);
-        if (result && result.data && result.data.models) {
-          setModels(result.data.models);
+        if (result && result.models) {
+          setModels(result.models);
         }
       })
       .catch((error) => {
