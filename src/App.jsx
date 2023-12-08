@@ -32,7 +32,7 @@ function App() {
   // fetch models from api server
   const fetchModels = () => {
     // Fetch data from the API
-    fetch(`${FullmetalChatApiUrl}/models`)
+    fetch(`${FullmetalAPIURL}/models`, { headers: { apiKey: 'sample-key' } })
       .then((response) => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
