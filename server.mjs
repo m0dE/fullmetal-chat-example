@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import Fullmetal from 'fullmetal-client';
+import axios from 'axios';
 dotenv.config();
 
 const PORT = 8000;
@@ -48,6 +49,26 @@ ASSISTANT:`,
   });
 });
 
+const handleModelRequest = async (req, res) => {
+  try {
+    const response = await axios.get(
+      `${process.env.FULLMETAL_API_URL}/models`,
+      {
+        headers: {
+          apiKey: process.env.FULLMETAL_API_KEY,
+        },
+      }
+    );
+
+    console.log(response);
+    res.status(200).json({ data: response.data });
+  } catch (error) {
+    console.error('Error fetching models:', error.message);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+app.get('/models', handleModelRequest);
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}/completions`);
 });

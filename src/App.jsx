@@ -1,7 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
 import { BiSend, BiLogoGithub } from 'react-icons/bi';
 import io from 'socket.io-client';
-import { FullmetalAPIURL, ChatBackendScoketUrl } from './config';
+import {
+  FullmetalAPIURL,
+  ChatBackendScoketUrl,
+  FullmetalChatApiUrl,
+} from './config';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Markdown from 'react-markdown';
@@ -28,7 +32,7 @@ function App() {
   // fetch models from api server
   const fetchModels = () => {
     // Fetch data from the API
-    fetch(`${FullmetalAPIURL}/models`)
+    fetch(`${FullmetalChatApiUrl}/models`)
       .then((response) => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -37,8 +41,9 @@ function App() {
       })
       .then((result) => {
         // Update the state with the fetched data
-        if (result && result.models) {
-          setModels(Object.keys(result.models));
+        console.log(result);
+        if (result && result.data && result.data.models) {
+          setModels(result.data.models);
         }
       })
       .catch((error) => {
@@ -265,6 +270,7 @@ function App() {
     }
   };
 
+  console.log(models);
   // const currentChat = previousChats.filter(
   //   (prevChat) => prevChat.title === currentTitle
   // )

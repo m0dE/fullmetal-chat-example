@@ -23,11 +23,12 @@ const options = {
   requestCert: false,
   rejectUnauthorized: false,
 };
-const PORT = process.env.PORT || 8081;
+const PORT = process.env.PORT || 8000;
 
 const httpsServer = https.createServer(options, app);
 
 import Fullmetal from 'fullmetal-client';
+import axios from 'axios';
 
 const io = new Server(httpsServer, {
   cors: {
@@ -63,6 +64,25 @@ ASSISTANT:`,
     );
   });
 });
+
+const handleModelRequest = async (req, res) => {
+  try {
+    const response = await axios.get(
+      `${process.env.FULLMETAL_API_URL}/models`,
+      {
+        headers: {
+          apiKey: process.env.FULLMETAL_API_KEY,
+        },
+      }
+    );
+
+    res.status(200).json({ data: response.data });
+  } catch (error) {
+    console.error('Error fetching models:', error.message);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+app.get('/models', handleModelRequest);
 
 io.on('error', (error) => {
   console.error('Socket.IO Error:', error);

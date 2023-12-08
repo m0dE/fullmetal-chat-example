@@ -290,13 +290,6 @@ h2 {
   margin-right: 8px;
 }
 
-/* Media query for responsiveness */
-@media only screen and (max-width: 768px) {
-  .regenerate-button {
-    font-size: 12px;
-  }
-}
-
 @keyframes spin {
   0% {
     transform: rotate(0deg);
@@ -304,16 +297,6 @@ h2 {
   100% {
     transform: rotate(360deg);
   }
-}
-
-.loading-spinner {
-  border: 4px solid rgba(255, 255, 255, 0.3);
-  border-top: 4px solid #3498db;
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  animation: spin 2s linear infinite;
-  margin: 0 auto;
 }
 
 .tooltip {
@@ -376,4 +359,28 @@ li.fullmetal-chat-li li {
 
 .regenerate-button .icon {
   margin-right: 8px;
+}
+.loading-spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  animation: spin 2s linear infinite;
+}
+/* Media query for responsiveness */
+@media only screen and (max-width: 768px) {
+  .regenerate-button {
+    font-size: 12px;
+  }
+
+  .form-container {
+    gap: 0;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .main-bottom {
+    gap: 2px;
+  }
 }
