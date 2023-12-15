@@ -384,3 +384,51 @@ li.fullmetal-chat-li li {
     gap: 2px;
   }
 }
+
+.switch {
+  position: relative;
+  /* display: inline-block; */
+  margin-top: 15px; /* Add margin to bring it down */
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: relative; /* Change from absolute to relative */
+  cursor: pointer;
+  width: 60px;
+  height: 34px;
+  background-color: #ccc;
+  transition: background-color 0.4s;
+  display: inline-block; /* Added display property */
+  vertical-align: middle; /* Align vertically in the middle */
+}
+
+.slider:before {
+  position: absolute;
+  content: '';
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: transform 0.4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #2196f3;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
