@@ -269,8 +269,6 @@ function App() {
       console.error('Fetch error:', error);
     }
   };
-
-  console.log(models);
   // const currentChat = previousChats.filter(
   //   (prevChat) => prevChat.title === currentTitle
   // )
