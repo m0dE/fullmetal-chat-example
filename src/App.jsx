@@ -1,11 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { BiSend, BiLogoGithub } from 'react-icons/bi';
 import io from 'socket.io-client';
-import {
-  FullmetalAPIURL,
-  ChatBackendScoketUrl,
-  FullmetalChatApiUrl,
-} from './config';
+import { FullmetalAPIURL, ChatBackendSocketUrl } from './config';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Markdown from 'react-markdown';
@@ -82,7 +78,7 @@ function App() {
         .filter((item) => item.role === 'user')
         .pop()?.content;
     }
-    const newSocket = io(ChatBackendScoketUrl, {
+    const newSocket = io(ChatBackendSocketUrl, {
       path: '/socket.io/',
       forceNew: true,
       reconnectionAttempts: 3,
