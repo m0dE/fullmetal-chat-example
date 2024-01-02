@@ -1,7 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
 import { BiSend, BiLogoGithub } from 'react-icons/bi';
 import io from 'socket.io-client';
-import { FullmetalAPIURL, ChatBackendSocketUrl } from './config';
+import {
+  FullmetalAPIURL,
+  ChatBackendSocketUrl,
+  FullmetalApiKey,
+} from './config';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Markdown from 'react-markdown';
@@ -28,7 +32,7 @@ function App() {
   // fetch models from api server
   const fetchModels = () => {
     // Fetch data from the API
-    fetch(`${FullmetalAPIURL}/models`, { headers: { apiKey: 'sample-key' } })
+    fetch(`${FullmetalAPIURL}/models`, { headers: { apiKey: FullmetalApiKey } })
       .then((response) => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
