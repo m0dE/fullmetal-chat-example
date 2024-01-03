@@ -222,6 +222,7 @@ function App() {
       newOutput[
         previousChats.length - 1
       ].completed = `${summaryDetail.completed}`;
+      newOutput[previousChats.length - 1].coins = `${summaryDetail.coins}`;
 
       // @ts-ignore
       setPreviousChats(newOutput);
@@ -488,8 +489,8 @@ function App() {
                           }}
                         >
                           <small style={{ color: '#1acb1a' }}>
-                            Model={chatMsg.model}, Speed={chatMsg.speed},
-                            Elapsed Time={chatMsg.elapsedTime}
+                            Served by {chatMsg.model} for {chatMsg.coins} coins
+                            in {chatMsg.elapsedTime}, Speed={chatMsg.speed}
                           </small>
                         </li>
                       )}
