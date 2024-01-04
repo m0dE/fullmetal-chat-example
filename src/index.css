@@ -124,8 +124,8 @@ button {
   flex-direction: column;
   gap: 1rem;
   padding-bottom: 1rem;
-  overflow: auto;
   height: 100vh;
+  overflow: auto;
 }
 
 .main-header ul div li.fullmetal-chat-li {
@@ -139,6 +139,7 @@ button {
   line-height: 1.5rem;
   font-size: 14px;
   width: 100%;
+  overflow-x: hidden;
 }
 
 /* .main-header li:nth-child(odd) {
