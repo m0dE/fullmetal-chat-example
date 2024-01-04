@@ -160,7 +160,6 @@ function App() {
     if (socketRef.current) {
       let tempPrompt = prompt;
       //if regenerate is true, set current prompt
-      console.log(regenerate);
       if (regenerate) {
         regenerateClicked.current = true;
         tempPrompt = previousChats
@@ -288,6 +287,8 @@ function App() {
   // const currentChat = previousChats.filter(
   //   (prevChat) => prevChat.title === currentTitle
   // )
+
+  const currentTime = new Date();
   return (
     <>
       <div className='container'>
@@ -332,7 +333,7 @@ function App() {
         </section> */}
 
         <section className='main'>
-          <h2 className='text-xl w-full mb-5'>
+          <h2 style={{ marginBottom: '10px' }} className='text-xl w-full mb-5'>
             This is{' '}
             <a
               href='http://fullmetal.ai/'
@@ -354,14 +355,41 @@ function App() {
             </a>{' '}
             )
           </h2>
+          <small className='footer-text'>
+            <span>
+              Free Research Preview.{' '}
+              <a
+                href='http://fullmetal.ai/'
+                target='_blank'
+                rel='noreferrer'
+                style={{ color: 'lightblue' }}
+              >
+                Fullmetal
+              </a>{' '}
+              may produce inaccurate information about people, places, or facts.{' '}
+              <a
+                href='http://fullmetal.ai/'
+                target='_blank'
+                rel='noreferrer'
+                style={{ color: 'lightblue' }}
+              >
+                Fullmetal
+              </a>{' '}
+              {currentTime.getFullYear()} Version
+            </span>
+          </small>
           <hr />
           {models && (
             <div style={{ display: 'flex' }}>
-              <span style={{ margin: '20px 10px' }}>Model: </span>
+              {/* <span style={{ margin: '20px 10px' }}>Model: </span> */}
               <select
                 onChange={(e) => setSelectedModel(e.target.value)}
                 value={selectedModel}
-                style={{ margin: '10px 0', padding: '5px 10px' }}
+                style={{
+                  margin: '15px 0',
+                  padding: '5px 15px',
+                  borderRadius: '10px',
+                }}
               >
                 {models.map((key) => (
                   <option key={key} value={key}>
@@ -454,7 +482,7 @@ function App() {
 
                             <svg
                               xmlns='http://www.w3.org/2000/svg'
-                              height='2em'
+                              height='1.5em'
                               viewBox='0 0 512 512'
                               fill='#b3b3b3'
                             >
@@ -465,7 +493,7 @@ function App() {
                           clickedButtons[chatMsg.responseRefId] && (
                             <svg
                               xmlns='http://www.w3.org/2000/svg'
-                              height='2em'
+                              height='1.5em'
                               viewBox='0 0 512 512'
                               style={{ fill: '#b3b3b3' }}
                             >
@@ -520,27 +548,25 @@ function App() {
           <div>
             <div className='main-bottom'>
               {!isResponseLoading && previousChats.length ? (
-                <span
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleRegenerate(e);
-                  }}
-                  className='regenerate-button'
-                >
-                  <span className='icon'>
-                    <FontAwesomeIcon icon={faRedoAlt} />
+                <>
+                  <span
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleRegenerate(e);
+                    }}
+                    className='regenerate-button'
+                  >
+                    <button className='tooltip'>
+                      <FontAwesomeIcon className='' icon={faRedoAlt} />{' '}
+                      <span className='tooltiptext'>Regenerate text</span>
+                    </button>
                   </span>
-                  Regenerate
-                </span>
+                </>
               ) : (
                 isResponseLoading &&
                 regenerateClicked.current && (
                   <button className='regenerate-button '>
-                    <div
-                      className='loading-spinner'
-                      style={{ marginRight: '4px' }}
-                    ></div>
-                    Regenerating
+                    <div className='loading'>...</div>
                   </button>
                 )
               )}
@@ -557,41 +583,21 @@ function App() {
                   onKeyDown={handleTextAreaKeyPress}
                   value={
                     isResponseLoading
-                      ? `Loading... ${queuedNumberMessage}`
+                      ? `Thinking... ${queuedNumberMessage}`
                       : prompt.charAt(0).toUpperCase() + prompt.slice(1)
                   }
                 ></textarea>
-                {!isResponseLoading && (
+                {!isResponseLoading ? (
                   <button type='button' onClick={submitHandler}>
                     <BiSend size={20} />
                   </button>
+                ) : (
+                  !regenerateClicked.current && (
+                    <div className='loading'>...</div>
+                  )
                 )}
               </div>
             </div>
-            <small className='footer-text'>
-              <span>
-                Free Research Preview.{' '}
-                <a
-                  href='http://fullmetal.ai/'
-                  target='_blank'
-                  rel='noreferrer'
-                  style={{ color: 'lightblue' }}
-                >
-                  Fullmetal
-                </a>{' '}
-                may produce inaccurate information about people, places, or
-                facts.{' '}
-                <a
-                  href='http://fullmetal.ai/'
-                  target='_blank'
-                  rel='noreferrer'
-                  style={{ color: 'lightblue' }}
-                >
-                  Fullmetal
-                </a>{' '}
-                2023 Version
-              </span>
-            </small>
           </div>
         </section>
       </div>

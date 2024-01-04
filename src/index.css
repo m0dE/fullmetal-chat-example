@@ -219,7 +219,7 @@ select::placeholder {
 }
 
 .form-container svg {
-  fill: #5f6070;
+  fill: #fff;
   transform: rotate(-45deg);
 }
 
@@ -344,7 +344,7 @@ li.fullmetal-chat-li li {
   color: white;
   border: 1px solid #e7e7e7;
   border-radius: 4px;
-  font-size: 16px;
+  font-size: 14px;
   padding: 4px 8px;
   display: flex;
   cursor: pointer;
@@ -382,5 +382,22 @@ li.fullmetal-chat-li li {
 @media only screen and (max-width: 768px) {
   .main-bottom {
     gap: 2px;
+  }
+}
+
+.loading {
+  width: 20px;
+  height: 16px;
+  font-weight: bold;
+  display: inline-block;
+  font-family: monospace;
+  font-size: 14px;
+  clip-path: inset(0 3ch 0 0);
+  animation: l 0.5s steps(4) infinite;
+}
+
+@keyframes l {
+  to {
+    clip-path: inset(0 -1ch 0 0);
   }
 }
