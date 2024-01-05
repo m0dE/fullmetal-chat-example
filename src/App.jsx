@@ -530,7 +530,7 @@ function App() {
                 ))}
               </ul>
             ) : (
-              <div style={{ width: '35vw', margin: '10vh auto' }}>
+              <div className='info'>
                 <p>
                   <a
                     href='http://fullmetal.ai/'

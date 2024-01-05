@@ -393,23 +393,42 @@ li.fullmetal-chat-li li {
   }
 }
 
+.info {
+  width: 35vw;
+  margin: 10vh auto;
+}
+
 @media only screen and (max-width: 768px) {
   .main-bottom {
     width: 90vw;
     gap: 2px;
   }
+
+  .info {
+    width: 90vw;
+    margin: 2vh auto;
+    text-align: center;
+  }
+
   .main {
     overflow: hidden;
   }
 }
+
 @media only screen and (min-width: 768px) and (max-width: 1280px) {
   .main-header ul div li.fullmetal-chat-li {
     overflow-x: hidden;
   }
 
+  .info {
+    width: 35vw;
+    margin: 10vh auto;
+  }
+
   .tooltip:hover .tooltiptext {
     visibility: hidden;
   }
+
   .main-bottom {
     width: 98vw;
     gap: 2px;
