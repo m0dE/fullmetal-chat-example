@@ -29,6 +29,7 @@ function App() {
   const textboxRef = useRef(null);
   const socketRef = useRef(null);
   const regenerateClicked = useRef(false);
+  const loadingPlaceholder = 'Typing...';
   let socketId;
 
   // fetch models from api server
@@ -102,6 +103,9 @@ function App() {
                 .map((chat) => chat.role)
                 .lastIndexOf('assistant');
               if (lastAssistantChatIndex >= 0 && response.token) {
+                clonedChats[lastAssistantChatIndex].content = clonedChats[
+                  lastAssistantChatIndex
+                ].content.replace(loadingPlaceholder, '');
                 clonedChats[
                   lastAssistantChatIndex
                 ].content += `${response.token}`;
@@ -183,7 +187,7 @@ function App() {
         },
         {
           role: 'assistant',
-          content: '',
+          content: loadingPlaceholder,
         },
       ]);
     } else {
@@ -583,7 +587,7 @@ function App() {
                   onKeyDown={handleTextAreaKeyPress}
                   value={
                     isResponseLoading
-                      ? `Thinking... ${queuedNumberMessage}`
+                      ? ` ${queuedNumberMessage}`
                       : prompt.charAt(0).toUpperCase() + prompt.slice(1)
                   }
                 ></textarea>

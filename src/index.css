@@ -139,7 +139,6 @@ button {
   line-height: 1.5rem;
   font-size: 14px;
   width: 100%;
-  overflow-x: hidden;
 }
 
 /* .main-header li:nth-child(odd) {
@@ -322,7 +321,7 @@ h2 {
   border-radius: 10px;
   padding: 10px;
   position: absolute;
-  z-index: 10;
+  z-index: 1;
   bottom: 150%;
   left: 50%;
   margin-left: -60px;
@@ -378,6 +377,13 @@ li.fullmetal-chat-li li {
 }
 /* Media query for responsiveness */
 @media only screen and (max-width: 768px) {
+  .main-header ul div li.fullmetal-chat-li {
+    overflow-x: hidden;
+  }
+
+  .tooltip:hover .tooltiptext {
+    visibility: hidden;
+  }
   .regenerate-button {
     font-size: 12px;
   }
@@ -397,9 +403,16 @@ li.fullmetal-chat-li li {
   }
 }
 @media only screen and (min-width: 768px) and (max-width: 1280px) {
+  .main-header ul div li.fullmetal-chat-li {
+    overflow-x: hidden;
+  }
+
+  .tooltip:hover .tooltiptext {
+    visibility: hidden;
+  }
   .main-bottom {
     width: 98vw;
-    /* gap: 2px; */
+    gap: 2px;
   }
   .main {
     overflow: hidden;
