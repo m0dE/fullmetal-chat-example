@@ -256,10 +256,10 @@ h2 {
     margin: 0rem auto;
     width: 40vw;
   }
-  .main-bottom {
+  /* .main-bottom {
     width: 90vw;
     gap: 2px;
-  }
+  } */
   .footer-text {
     margin: 0 auto 1rem auto;
     width: 40vw;
@@ -387,10 +387,19 @@ li.fullmetal-chat-li li {
   }
 }
 
-@media only screen and (max-width: 1280px) {
+@media only screen and (max-width: 768px) {
   .main-bottom {
-    width: 90vw;
+    width: 98vw;
     gap: 2px;
+  }
+  .main {
+    overflow: hidden;
+  }
+}
+@media only screen and (min-width: 768px) and (max-width: 1280px) {
+  .main-bottom {
+    width: 98vw;
+    /* gap: 2px; */
   }
   .main {
     overflow: hidden;
