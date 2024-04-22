@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev:frontend": "vite --host",
-    "dev:backend": "nodemon server.mjs",
-    "dev:secure:backend": "nodemon https.server.mjs",
+    "dev:backend": "node server.mjs",
+    "dev:secure:backend": "node https.server.mjs",
     "build": "vite build",
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
