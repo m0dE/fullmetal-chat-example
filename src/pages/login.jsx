@@ -151,14 +151,14 @@ export default function Login() {
           </div> */}
         </div>
 
-        <div className="py-4 bg-gray-100 dark:bg-gray-700 rounded-b-md">
-          {/* <Link
+        {/* <div className="py-4 bg-gray-100 dark:bg-gray-700 rounded-b-md">
+          <Link
             className="block text-xs font-medium text-center text-gray-800 dark:text-gray-200 hover:underline"
             to="/auth/signup"
           >
             Sign up
-          </Link> */}
-        </div>
+          </Link>
+        </div> */}
       </div>
     </div>
   );
