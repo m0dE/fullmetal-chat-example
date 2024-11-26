@@ -199,7 +199,7 @@ function Chat({ npc = false }) {
       socketRef.current.emit('prompt', {
         prompt: tempPrompt,
         model: selectedModel,
-        npc: selectedNpc,
+        npc: JSON.stringify(selectedNpc),
       });
 
       setIsResponseLoading(true);

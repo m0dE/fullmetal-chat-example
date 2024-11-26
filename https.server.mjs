@@ -54,20 +54,19 @@ fullmetal.onResponseQueue(async (data) => {
 });
 io.on('connection', async (socket) => {
   console.log('New connection established', socket.id);
+
   socket.on('prompt', async (data) => {
-    await fullmetal.sendPrompt(
-      `${
-        data.npc
-          ? `You are ${npc.name}, ${npc.role}. ${npc.summary}.
-    ---
-    `
-          : ``
-      }This is a conversation between a user and a helpful assistant.
-USER: ${data.prompt}  
-ASSISTANT:`,
-      socket.id,
-      { model: data.model }
-    );
+    const npcData = data.npc ? JSON.parse(data.npc) : null;
+    const tprompt = `This is a conversation between a user and a helpful assistant ${
+      npcData
+        ? `whose name is are ${npcData.name}, role is ${npcData.role}. ${npcData.summary}
+      `
+        : ``
+    }.
+  USER: ${data.prompt}  
+  ASSISTANT:`;
+    console.log(tprompt);
+    await fullmetal.sendPrompt(tprompt, socket.id, { model: data.model });
   });
 });
 
