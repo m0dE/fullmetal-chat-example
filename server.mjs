@@ -40,7 +40,13 @@ io.on('connection', async (socket) => {
   console.log('New connection established', socket.id);
   socket.on('prompt', async (data) => {
     await fullmetal.sendPrompt(
-      `This is a conversation between a user and a helpful assistant.
+      `${
+        data.npc
+          ? `You are ${npc.name}, ${npc.role}. ${npc.summary}.
+    ---
+    `
+          : ``
+      }This is a conversation between a user and a helpful assistant.
 USER: ${data.prompt}  
 ASSISTANT:`,
       socket.id,

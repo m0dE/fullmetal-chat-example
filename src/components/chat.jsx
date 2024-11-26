@@ -25,6 +25,7 @@ function Chat({ npc = false }) {
   const [models, setModels] = useState();
   const [npcs, setNpcs] = useState();
   const [selectedModel, setSelectedModel] = useState();
+  const [selectedNpc, setSelectedNpc] = useState();
   const [queuedNumberMessage, setQueuedNumberMessage] = useState('');
   const [clickedButtons, setClickedButtons] = useState({});
   const [resRefId, setResRefId] = useState('');
@@ -34,6 +35,10 @@ function Chat({ npc = false }) {
   const regenerateClicked = useRef(false);
   const loadingPlaceholder = 'Typing...';
   let socketId;
+
+  useEffect(() => {
+    console.log(selectedNpc);
+  }, [selectedNpc]);
 
   const fetchNpcs = async () => {
     const response = await fetchWithAuth(`/api/npc/all?limit=8&mine=true`, {
@@ -194,6 +199,7 @@ function Chat({ npc = false }) {
       socketRef.current.emit('prompt', {
         prompt: tempPrompt,
         model: selectedModel,
+        npc: selectedNpc,
       });
 
       setIsResponseLoading(true);
@@ -421,7 +427,16 @@ function Chat({ npc = false }) {
               <div className="flex w-1/4">
                 <span className="mt-6 mr-2  w-1/4">My NPC: </span>
                 <select
-                  onChange={(e) => setSelectedModel(e.target.value)}
+                  onChange={(e) => {
+                    setSelectedModel(e.target.value);
+                    setSelectedNpc(
+                      JSON.parse(
+                        e.target.options[e.target.selectedIndex].getAttribute(
+                          'data-npc'
+                        )
+                      )
+                    );
+                  }}
                   value={selectedModel}
                   style={{
                     margin: '15px 0',
@@ -430,7 +445,11 @@ function Chat({ npc = false }) {
                   }}
                 >
                   {npcs.map((npc, index) => (
-                    <option key={index} value={npc.model}>
+                    <option
+                      key={index}
+                      value={npc.model}
+                      data-npc={JSON.stringify(npc)}
+                    >
                       {npc.name}
                     </option>
                   ))}
