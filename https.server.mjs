@@ -59,7 +59,7 @@ io.on('connection', async (socket) => {
     const npcData = data.npc ? JSON.parse(data.npc) : null;
     const tprompt = `${
       npcData
-        ? `Remember you are ${npcData.name}, role is ${npcData.role}. ${npcData.summary}.
+        ? `Remember you are ${npcData.name}, role is ${npcData.role}. ${npcData.summary}
       `
         : ``
     } ${data.prompt}`;
