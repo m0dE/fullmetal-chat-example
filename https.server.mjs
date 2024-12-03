@@ -54,8 +54,16 @@ fullmetal.onResponseQueue(async (data) => {
 });
 io.on('connection', async (socket) => {
   console.log('New connection established', socket.id);
+
   socket.on('prompt', async (data) => {
-    await fullmetal.sendPrompt(data.prompt, socket.id, { model: data.model });
+    const npcData = data.npc ? JSON.parse(data.npc) : null;
+    const tprompt = `${
+      npcData
+        ? `Remember you are ${npcData.name}, role is ${npcData.role}. ${npcData.summary}.
+      `
+        : ``
+    } ${data.prompt}`;
+    await fullmetal.sendPrompt(tprompt, socket.id, { model: data.model });
   });
 });
 
