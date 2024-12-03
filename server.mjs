@@ -45,8 +45,11 @@ io.on('connection', async (socket) => {
         ? `Remember you are ${npcData.name}, role is ${npcData.role}. ${npcData.summary}
       `
         : ``
-    } ${data.prompt}`;
-    await fullmetal.sendPrompt(tprompt, socket.id, { model: data.model });
+    }`;
+    await fullmetal.sendPrompt(data.prompt, socket.id, {
+      model: data.model,
+      sysPrompt: tprompt,
+    });
   });
 });
 
