@@ -50,7 +50,7 @@ function Chat({ npc = false }) {
       setNpcs(response.data);
       setModels(response.data.map((m) => m.model));
       setSelectedModel(response.data[0].model);
-      setSelectedNpc(JSON.parse(response.data[0]));
+      setSelectedNpc(response.data[0]);
     }
   };
 
