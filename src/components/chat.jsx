@@ -135,7 +135,7 @@ function Chat({ npc = false }) {
                 ].content.replace(loadingPlaceholder, "");
                 clonedChats[
                   lastAssistantChatIndex
-                ].content += `${response.token}`;
+                ].content = `${response.token}`;
               }
               return clonedChats;
             });
@@ -160,7 +160,7 @@ function Chat({ npc = false }) {
                   ].content.replace(loadingPlaceholder, "");
                   clonedChats[
                     lastAssistantChatIndex
-                  ].content += `${response.token}`;
+                  ].content = `${response.token}`;
                 }
                 return clonedChats;
               });
