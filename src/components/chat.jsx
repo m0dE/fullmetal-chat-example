@@ -147,7 +147,26 @@ function Chat({ npc = false }) {
             regenerateClicked.current = false;
 
             setSummaryDetail(response);
-            setMessage((prev) => prev + response.token);
+            if (response.token) {
+              setMessage(response.token);
+              setPreviousChats((prevChats) => {
+                const clonedChats = [...prevChats];
+                const lastAssistantChatIndex = clonedChats
+                  .map((chat) => chat.role)
+                  .lastIndexOf("assistant");
+                if (lastAssistantChatIndex >= 0 && response.token) {
+                  clonedChats[lastAssistantChatIndex].content = clonedChats[
+                    lastAssistantChatIndex
+                  ].content.replace(loadingPlaceholder, "");
+                  clonedChats[
+                    lastAssistantChatIndex
+                  ].content += `${response.token}`;
+                }
+                return clonedChats;
+              });
+            } else {
+              setMessage("");
+            }
             setIsResponseLoading(false);
             setPrompt("");
             textboxRef.current.focus();
