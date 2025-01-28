@@ -147,7 +147,7 @@ function Chat({ npc = false }) {
             regenerateClicked.current = false;
 
             setSummaryDetail(response);
-            setMessage(response.token);
+            setMessage((prev) => prev + response.token);
             setIsResponseLoading(false);
             setPrompt("");
             textboxRef.current.focus();
