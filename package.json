@@ -19,7 +19,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
-    "fullmetal-client": "^1.0.20",
+    "fullmetal-client": "^1.0.25",
     "nodemon": "^2.0.22",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
